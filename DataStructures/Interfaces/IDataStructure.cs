@@ -4,8 +4,8 @@ using System.Text;
 
 namespace DataStructures.Interfaces
 {
-    interface iDataStructure
+    interface iDataStructure<T>
     {
-        T getElement<T>();
+        T getElement();
     }
 }
