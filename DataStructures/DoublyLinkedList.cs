@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace DataStructures
 {
-    public class SingleLinkedList<T>
+    public class DoublyLinkedList<T>
     {
-        public SingleLinkedListNode<T> head;
+        public DoublyLinkedListNode<T> head;
 
         public void PrintList()
         {
@@ -21,8 +21,8 @@ namespace DataStructures
 
         public void insertingNodeAtTheEnd(T newData)
         {
-            var newNode = new SingleLinkedListNode<T>(newData);
-            if (head==null)
+            var newNode = new DoublyLinkedListNode<T>(newData);
+            if (head == null)
             {
                 head = newNode;
                 return;
@@ -32,12 +32,13 @@ namespace DataStructures
             {
                 temp = temp.Next;
             }
+            newNode.Previous = temp;
             temp.Next = newNode;
         }
 
         public void InsertingAtTheBeginning(T newData)
         {
-            var newNode = new SingleLinkedListNode<T>(newData);
+            var newNode = new DoublyLinkedListNode<T>(newData);
             if (head == null)
             {
                 head = newNode;
@@ -45,19 +46,23 @@ namespace DataStructures
             }
             var tempHead = newNode;
             tempHead.Next = head;
+            head.Previous = newNode;
             head = newNode;
         }
 
         public void InsertNodeNthPosition(T newData, T key)
         {
             var temp = head;
-            while(!EqualityComparer<T>.Default.Equals(temp.Value, key))
+            var nextNode = temp.Next;
+            while (!EqualityComparer<T>.Default.Equals(temp.Value, key))
             {
                 temp = temp.Next;
             }
-            var newNode = new SingleLinkedListNode<T>(newData);
+            var newNode = new DoublyLinkedListNode<T>(newData);
             newNode.Next = temp.Next;
+            newNode.Previous = temp;
             temp.Next = newNode;
+            nextNode.Previous = newNode;
         }
 
         public void DeleteNodeOnNthPosition(T key)
@@ -65,6 +70,7 @@ namespace DataStructures
             if (EqualityComparer<T>.Default.Equals(head.Value, key))
             {
                 head = head.Next;
+                head.Previous = null;
             }
             else
             {
@@ -83,78 +89,39 @@ namespace DataStructures
                 }
 
                 var nodeToDelete = temp.Next;
-                temp.Next = nodeToDelete.Next;
+                var temp2 = nodeToDelete.Next;
+                temp.Next = temp2;
+                temp2.Previous = temp;
                 nodeToDelete = null;
             }
         }
 
         public void ReverseLinkedList()
         {
-            SingleLinkedListNode<T> temp = head;
-            SingleLinkedListNode<T> previous = null;
-            SingleLinkedListNode<T> current = head;
+            DoublyLinkedListNode<T> temp = null;
+            DoublyLinkedListNode<T> current = head;
 
             while (temp != null)
             {
-                current = temp;
-                temp = temp.Next;
-                head = current;
-                head.Next = previous;
-                previous = head;
+                temp = current.Previous;
+                current.Previous = current.Next;
+                current.Next = temp;
+                current = current.Previous;
             }
             return;
-        }
-
-        public void RecursivePrint(SingleLinkedListNode<T> head)
-        {
-            var temp = head;
-            if (temp!=null)
-            {
-                Console.WriteLine(temp.Value);
-                RecursivePrint(temp.Next);
-            }
-            return;
-        }
-
-        public void RecursiveReverse(SingleLinkedListNode<T> current, SingleLinkedListNode<T> previous)
-        {
-            var temp = current;
-            if (temp!=null)
-            {
-                temp = temp.Next;
-                head = current;
-                head.Next = previous;
-                previous = head;
-                RecursiveReverse(temp, previous);
-            }
-        }
-
-        public void RecursiveReversePrint(SingleLinkedListNode<T> current)
-        {
-            if (current == null)
-            {
-                Console.WriteLine("Nothing to print");
-                return;
-            }
-            var temp = current;
-            if (temp.Next != null)
-            {
-                temp = temp.Next;
-                RecursiveReversePrint(temp);
-                Console.WriteLine(temp.Value);
-            }
-            Console.WriteLine(current.Value);
         }
     }
 
-    public class SingleLinkedListNode<T>
+    public class DoublyLinkedListNode<T>
     {
         public T Value;
-        public SingleLinkedListNode<T> Next;
-        public SingleLinkedListNode(T value)
+        public DoublyLinkedListNode<T> Next;
+        public DoublyLinkedListNode<T> Previous;
+        public DoublyLinkedListNode(T value)
         {
             Value = value;
             Next = null;
+            Previous = null;
         }
     }
 }
