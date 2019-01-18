@@ -8,39 +8,17 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            //var lista = new DataStructures.Stack<string>();
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    lista.Push($"dupa {i}");
-            //}
-            //lista.PrintStack();
-            ////lista.ReverseLinkedList();
-            ////Console.WriteLine("reversing");
-            ////lista.PrintList();
-            ////lista.ReverseLinkedList();
-            ////Console.WriteLine("Reversing again");
-            ////lista.PrintList();
-            var combinations = new List<List<char>>() {
-               new List<char> { 'A', 'A' },
-               new List<char> { 'A', 'B' },
-               new List<char> { 'A', 'C' },
-               new List<char> {'B', 'B' },
-               new List<char> { 'B', 'C' },
-               new List<char> { 'C', 'C' }
-            };
-            char[] arr = { 'A', 'B', 'C'};
-            List<List<char>> mat = new List<List<char>>();
-            foreach (var letter in arr)
+            var tree = new BinarySearchTree();
+            List<int> sortedArray = new List<int>() { 1, 2, 3, 4, 10, 12, 20, 36, 40, 50 };
+            var counter = sortedArray.Count;
+            for (int i = 0; i < counter; i++)
             {
-                foreach (var item in combinations)
-                {
-                    if (item[0] == letter || item[1]== letter)
-                    {
-                        mat.Add(item);
-                        Console.WriteLine($"{item[0]}, {item[1]}");
-                    };
-                }
+                tree.Insert(sortedArray[sortedArray.Count / 2]);
+                sortedArray.RemoveAt(sortedArray.Count / 2);
             }
+            var searchResult = tree.SearchForANode(tree.root, 50);
+            var max = tree.Max(tree.root);
+            var height = tree.Height(tree.root);
             Console.ReadLine();
         }
     }
