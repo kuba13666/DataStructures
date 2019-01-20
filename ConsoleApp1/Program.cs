@@ -9,7 +9,7 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             var tree = new BinarySearchTree();
-            List<int> sortedArray = new List<int>() { 1, 2, 3, 4, 10, 12, 20, 36, 40, 50 };
+            List<int> sortedArray = new List<int>() { 1, 3, 4, 10, 12, 20, 36, 40, 50 };
             var counter = sortedArray.Count;
             for (int i = 0; i < counter; i++)
             {
@@ -18,7 +18,9 @@ namespace ConsoleApp1
             }
             var searchResult = tree.SearchForANode(tree.root, 50);
             var max = tree.Max(tree.root);
-            var height = tree.Height(tree.root);
+            var height = tree.Height(tree.root, 0, 0);
+            tree.TraverseInorder(tree.root);
+            tree.IsBinarySearchTree(tree.root, tree.root);
             Console.ReadLine();
         }
     }

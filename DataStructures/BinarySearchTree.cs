@@ -91,9 +91,9 @@ namespace DataStructures
             }
             return root;
         }
-        public int counter = 0;
-        public int max = 0;
-        public int Height(BinarySearchTreeNode root)
+
+
+        public int Height(BinarySearchTreeNode root, int counter, int max)
         {
             if (root == null)
             {
@@ -103,21 +103,40 @@ namespace DataStructures
             if (root.left != null)
             {
                 counter++;
-                Height(root.left);
+                max = Height(root.left, counter, max);
+                counter--;
             }
 
             if (root.right != null)
             {
                 counter++;
-                Height(root.left);
+                max = Height(root.right, counter, max);
+                counter--;
             }
             if (max<counter)
             {
                 max = counter;
             }
 
-            counter--;
             return max;
+        }
+
+        public void TraverseInorder(BinarySearchTreeNode root)
+        {
+            if (root == null)
+            {
+                return;
+            }
+
+            if (root.left != null)
+            {
+                TraverseInorder(root.left);
+            }
+            Console.WriteLine(root.Data);
+            if (root.right != null)
+            {
+                TraverseInorder(root.right);
+            }
         }
     }
 
