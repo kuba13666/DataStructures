@@ -22,28 +22,83 @@ namespace DataStructures
             root = InsertRec(root, data);
         }
 
-        public void Delete(int data)
+        public BinarySearchTreeNode InorderSuccessor(BinarySearchTreeNode root, int data)
         {
-            if (root == null)
+            if (root==null)
             {
-                return;
+                return null;
             }
 
-            if (root.Data == data)
-            {
-                root = null;
-            }
-
-            if (data > root.Data)
-            {
-                root.right = InsertRec(root.right, data);
-            }
             if (data < root.Data)
             {
-                root.left = InsertRec(root.left, data);
+                var temp = InorderSuccessor(root.left, data);
+                if (temp!=null)
+                {
+                    return temp;
+                }
+                //tu chyba bedzie ze jezeli temp= null to min z prawego
+                return root;
             }
+            else if (data > root.Data)
+            {
+                var temp = InorderSuccessor(root.right, data);
+                if (temp != null)
+                {
+                    return temp;
+                }
+                //tu chyba bedzie ze jezeli temp= null to min z prawego
+            }
+            else
+            {
+                if (root.right!=null)
+                {
+                    return Min(root.right);
+                }
+            }
+            return null;
+        }
 
-            //return root;
+        public BinarySearchTreeNode Delete(BinarySearchTreeNode root, int data)
+        {
+            if (root==null)
+            {
+                return null;
+            }
+            if (data<root.Data)
+            {
+                Delete(root.left, data);
+            }
+            else if(data > root.Data)
+            {
+                Delete(root.right, data);
+            }
+            else
+            {
+                if (root.left == null && root.right == null)
+                {
+                    root = null;
+                    return root;
+                }
+
+                if (root.left != null && root.right == null)
+                {
+                    root = root.left;
+                    return root;
+                }
+                else if (root.left != null && root.right == null)
+                {
+                    root = root.right;
+                    return root;
+                }
+
+                if (root.left != null && root.right != null)
+                {
+                    var replacementNode = Min(root.right);
+                    root.Data = replacementNode.Data;
+                    root.right = Delete(replacementNode, replacementNode.Data);
+                }
+            }
+            return root;
         }
         public BinarySearchTreeNode InsertRec(BinarySearchTreeNode root, int data)
         {
@@ -138,6 +193,22 @@ namespace DataStructures
                 TraverseInorder(root.right);
             }
         }
+
+        public bool IsBSTUtil(BinarySearchTreeNode root, int max, int min)
+        {
+            if (root == null)
+            {
+                return true;
+            }
+
+            if (root.Data < min || root.Data > max)
+            {
+                return false;
+            }
+
+            return IsBSTUtil(root.left, root.Data, int.MinValue) && IsBSTUtil(root.right, int.MaxValue, root.Data);
+        }
+
     }
 
 

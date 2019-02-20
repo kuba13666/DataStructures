@@ -100,7 +100,7 @@ namespace DataStructures
                 temp = temp.Next;
                 head = current;
                 head.Next = previous;
-                previous = head;
+                previous = current;
             }
             return;
         }
